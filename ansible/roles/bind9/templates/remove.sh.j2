@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Specify the directory path
+directory="/var/log/named"
+
+# Specify the number of days
+days=7
+
+# Use the find command to locate and remove files older than the specified days
+find "$directory" -type f -mtime +$days -exec rm {} \;
+
+echo "Files older than $days days removed."

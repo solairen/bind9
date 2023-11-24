@@ -1,0 +1,39 @@
+FROM moleszek/ansible:9.0.1
+
+# Variables
+ARG username=bind9
+ARG path=/bind9
+ARG config=/ansible
+
+# Environment
+ENV USER=${username}
+ENV USERNAME=${username}
+
+# Use user root
+USER root
+
+# Add user bind9
+RUN useradd -ms /bin/bash ${username}
+
+# Create folders
+RUN mkdir ${path}
+
+RUN chown -R ${username}:${username} ${path}
+RUN chown -R ${username}:${username} ${config}
+
+# Install packages
+RUN apt-get update && apt-get install wget sshpass less gpg -y
+
+# Install ansible-lint
+RUN pip install --upgrade pip
+RUN pip install ansible-lint
+
+# Install oh-my-posh
+RUN wget https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/posh-linux-amd64 -O /usr/local/bin/oh-my-posh
+RUN chmod +x /usr/local/bin/oh-my-posh
+RUN echo 'eval "$(oh-my-posh init bash --config /bind9/.devcontainer/configuration/terminal.omp.json)"' >> /home/${username}/.bashrc
+
+# User bind9
+USER ${username}
+
+ENTRYPOINT [ "/bin/bash" ]

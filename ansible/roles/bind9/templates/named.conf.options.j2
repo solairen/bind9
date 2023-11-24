@@ -1,0 +1,36 @@
+acl internal {
+    {% for address in addresses.values() %}
+      {{ address }}/24;
+    {% endfor %}
+};
+
+options {
+    directory "/var/cache/bind";
+
+    // Listen on localhost only
+    listen-on { {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}; };
+
+    // Allow recursion only from the "trusted" ACL
+    allow-recursion { internal; };
+
+    // Enable recursion
+    recursion yes;
+
+    // Disable zone transfers
+    allow-transfer { none; };
+
+    // Enable DNSSEC
+    dnssec-validation auto;
+
+    rate-limit {
+        responses-per-second 5;
+        errors-per-second 5;
+        window 5;
+    };
+
+    // Set up forwarders
+    forwarders {
+      {{ dns1 }};
+      {{ dns2 }};
+    };
+};

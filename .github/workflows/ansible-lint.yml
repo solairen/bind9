@@ -1,0 +1,19 @@
+---
+name: Ansible Lint
+on:
+  push:
+    branches-ignore:
+      - "main"
+  pull_request:
+    branches-ignore:
+      - "main"
+
+jobs:
+  ansible-lint:
+    name: Run Ansible lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Check yaml files
+      uses: ansible/ansible-lint@v6.20.0

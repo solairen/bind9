@@ -1,0 +1,48 @@
+// File: /etc/bind/named.conf.logging
+logging {
+    channel default_file {
+        file "/var/log/named/default.log" versions 3 size 5m;
+        severity info;
+        print-time yes;
+        print-category yes;
+        print-severity yes;
+    };
+
+    channel queries_file {
+        file "/var/log/named/queries.log" versions 3 size 5m;
+        severity debug;
+        print-time yes;
+        print-category yes;
+        print-severity yes;
+    };
+
+    channel security_file {
+        file "/var/log/named/security.log" versions 3 size 5m;
+        severity dynamic;
+        print-time yes;
+        print-category yes;
+        print-severity yes;
+    };
+
+    channel dnssec_file {
+        file "/var/log/named/dnssec.log" versions 3 size 5m;
+        severity dynamic;
+        print-time yes;
+        print-category yes;
+        print-severity yes;
+    };
+
+    channel syslog {
+        syslog local5;
+        severity info;
+        print-time yes;
+        print-category yes;
+        print-severity yes;
+    };
+
+    category default { default_file; };
+    category queries { queries_file; };
+    category security { security_file; };
+    category dnssec { dnssec_file; };
+    category default { syslog; };
+};

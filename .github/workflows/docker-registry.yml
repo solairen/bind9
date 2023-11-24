@@ -1,0 +1,48 @@
+---
+name: Docker registry
+on:
+  workflow_dispatch:
+    inputs:
+      versioning:
+        description: 'Version'
+        required: true
+
+env:
+  DOCKER_USER: ${{ secrets.docker_username }}
+  DOCKER_TOKEN: ${{ secrets.docker_token }}
+
+jobs:
+  publish:
+    name: Push image to DockerHub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Bind9 repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKER_USER }}
+          password: ${{ env.DOCKER_TOKEN }}
+
+      - name: Build and push | latest
+        uses: docker/build-push-action@v5
+        with:
+          file: docker/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: moleszek/bind9:latest
+
+      - name: Build and push | ${{ inputs.versioning }}
+        uses: docker/build-push-action@v5
+        with:
+          file: docker/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: moleszek/bind9:${{ inputs.versioning }}

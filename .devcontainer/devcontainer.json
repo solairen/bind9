@@ -1,0 +1,36 @@
+{
+  "name": "bind9-dev",
+  "build": {
+      "dockerfile": "../docker/Dockerfile-dev"
+  },
+  "postCreateCommand": "echo DONE!",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/bind9,type=bind",
+  "workspaceFolder": "/bind9",
+  "remoteUser": "bind9",
+  "features": {
+      "git": "latest"
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+          }
+        }
+      },
+      "extensions": [
+        "eamodio.gitlens",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "redhat.vscode-yaml",
+        "docsmsft.docs-preview",
+        "redhat.ansible",
+        "aaron-bond.better-comments",
+        "ybaumes.highlight-trailing-white-spaces",
+        "Gruntfuggly.todo-tree"
+      ]
+    }
+  }
+}

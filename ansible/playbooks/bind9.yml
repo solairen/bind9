@@ -1,0 +1,6 @@
+---
+- name: Install Bind9
+  hosts: bind9
+  gather_facts: true
+  roles:
+    - bind9

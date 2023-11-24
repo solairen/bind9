@@ -1,0 +1,9 @@
+{
+  "files.associations": {
+      "*.yml": "ansible",
+      "**/.github/**/*.yml": "yaml"
+  },
+  "iis.configDir": "",
+  "ansible.python.interpreterPath": "/usr/local/bin/python",
+  "editor.tabSize": 2
+}

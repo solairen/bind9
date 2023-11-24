@@ -1,0 +1,50 @@
+---
+- name: Install Bind9
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items:
+    - "{{ bind9_packages }}"
+    - cron
+
+- name: Create log folder
+  ansible.builtin.file:
+    path: /var/log/named
+    state: directory
+    owner: bind
+    group: bind
+    mode: u+rw,g-wx,o-rwx
+
+- name: Copy files to Bind9 host
+  ansible.builtin.template:
+    src: templates/{{ item }}.j2
+    dest: /etc/bind/{{ item }}
+    mode: '0644'
+    backup: true
+  with_items:
+    - named.conf
+    - named.conf.options
+    - named.conf.logging
+
+- name: Copy script to Bind9 host
+  ansible.builtin.template:
+    src: templates/remove.sh.j2
+    dest: /home/{{ ansible_ssh_user }}/remove.sh
+    mode: +x
+    backup: true
+
+- name: Add remove script to crontab
+  ansible.builtin.cron:
+    name: Remove logs older than 7 days
+    weekday: "6"
+    minute: "0"
+    hour: "23"
+    user: root
+    job: "/home/{{ ansible_ssh_user }}/remove.sh"
+
+- name: Run Bind9 service
+  ansible.builtin.service:
+    name: bind9
+    enabled: true
+    state: restarted

@@ -1,0 +1,4 @@
+---
+- name: Import bind9 task
+  become: true
+  ansible.builtin.import_tasks: bind9.yml

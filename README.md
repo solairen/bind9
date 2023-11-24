@@ -3,6 +3,8 @@
 
 This ansible script installs [Bind9](https://bind9.readthedocs.io/en/latest/index.html#).
 
+Docker image is available on [DockerHub](https://hub.docker.com/r/moleszek/bind9).
+
 Supported OS:
 
 - Debian 12

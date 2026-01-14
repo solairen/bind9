@@ -19,4 +19,5 @@ jobs:
       - name: Check yaml files
         uses: ansible/ansible-lint@v26.1.0
         with:
-          args: "-c .ansible-lint"
+          args: "-c ../.ansible-lint"
+          working_directory: "ansible"

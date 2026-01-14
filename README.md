@@ -1,5 +1,4 @@
-### About
----------
+# About
 
 This ansible script installs [Bind9](https://bind9.readthedocs.io/en/latest/index.html#).
 
@@ -11,8 +10,7 @@ Supported OS:
 - Ubuntu 22.04
 - Raspberry Pi 4/5
 
-#### Ubuntu
------------
+## Ubuntu
 
 In Ubuntu OS `DNSStubListener` should be set to `no`:
 
@@ -32,8 +30,7 @@ Save and restart `systemd-resolved.service`
 sudo restart systemd-resolved.service
 ```
 
-#### Configuration
-------------------
+## Configuration
 
 Open `configuration.yml` that is located in `group_vars/bind9` and set proper values:
 

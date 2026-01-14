@@ -4,12 +4,14 @@
       "dockerfile": "../docker/Dockerfile-dev"
   },
   "postCreateCommand": "echo DONE!",
-  "workspaceMount": "source=${localWorkspaceFolder},target=/bind9,type=bind",
-  "workspaceFolder": "/bind9",
-  "remoteUser": "bind9",
-  "features": {
-      "git": "latest"
-  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/development,type=bind",
+  "workspaceFolder": "/development",
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.gnupg,target=/home/vscode/.gnupg,type=bind,consistency=cached"
+  ],
+  "remoteUser": "vscode",
+  "containerUser": "vscode",
   "customizations": {
     "vscode": {
       "settings": {
@@ -21,15 +23,14 @@
         }
       },
       "extensions": [
-        "eamodio.gitlens",
+        "redhat.ansible",
         "ms-python.python",
         "ms-python.vscode-pylance",
         "redhat.vscode-yaml",
         "docsmsft.docs-preview",
         "redhat.ansible",
         "aaron-bond.better-comments",
-        "ybaumes.highlight-trailing-white-spaces",
-        "Gruntfuggly.todo-tree"
+        "eamodio.gitlens"
       ]
     }
   }

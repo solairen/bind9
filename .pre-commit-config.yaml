@@ -8,10 +8,11 @@ repos:
       - id: end-of-file-fixer
       - id: check-yaml
         args: [--allow-multiple-documents]
-        exclude: ^(group_vars/|roles/.*/vars/)
+      - id: check-toml
       - id: check-added-large-files
       - id: check-merge-conflict
       - id: detect-private-key
+      - id: mixed-line-ending
       - id: no-commit-to-branch
         args: [--branch, main, --branch, master]
 
@@ -22,20 +23,20 @@ repos:
       - id: yamllint
         args: [-c, .yamllint.yml]
 
-  # Ansible linting (local hook to use system Python 3.12)
+  # Ansible linting
   - repo: local
     hooks:
       - id: ansible-lint
         name: ansible-lint
-        entry: bash -c 'ANSIBLE_ROLES_PATH=ansible/roles ansible-lint --force-color'
+        entry: bash -c 'cd ansible && ansible-lint --force-color -c ../.ansible-lint'
         language: python
         pass_filenames: false
         always_run: true
         additional_dependencies:
-          - ansible-lint==24.9.2
-          - ansible-core>=2.15,<2.18
+          - ansible-lint==26.4.0
+          - ansible-core>=2.20,<2.20.4
 
-  # Markdown linting (Python-based - no Node.js required)
+  # Markdown linting
   - repo: local
     hooks:
       - id: pymarkdown

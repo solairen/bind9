@@ -1,72 +1,113 @@
 # About
 
-This ansible script installs [Bind9](https://bind9.readthedocs.io/en/latest/index.html#).
+This Ansible playbook installs and configures [Bind9](https://bind9.readthedocs.io/en/latest/index.html#) as a local recursive DNS resolver with the following features:
 
-Docker image is available on [DockerHub](https://hub.docker.com/r/moleszek/bind9).
+- DNS-over-TLS forwarding to [Quad9](https://www.quad9.net/) (`9.9.9.9`, `149.112.112.112`)
+- DNSSEC validation
+- Rate limiting
+- Structured logging to `/var/log/named/`
+- Weekly log rotation via cron
 
-Supported OS:
+A Docker image is available on [DockerHub](https://hub.docker.com/r/moleszek/bind9).
 
-- Debian 12
-- Ubuntu 22.04
-- Raspberry Pi 4/5
+## Supported OS
 
-## Ubuntu
+- Debian 13
+- Ubuntu 24.04
+- Raspberry Pi 4/5 (arm64)
 
-In Ubuntu OS `DNSStubListener` should be set to `no`:
+## Prerequisites
 
-```bash
-vim /etc/systemd/resolved.conf
-```
-
-uncomment and change to `no`:
-
-```bash
-DNSStubListener=no
-```
-
-Save and restart `systemd-resolved.service`
+- Ansible `>=2.15`
+- Ansible collections (install before running the playbook):
 
 ```bash
-sudo restart systemd-resolved.service
+ansible-galaxy collection install -r requirements.yml
 ```
 
-## Configuration
+## Usage
 
-Open `configuration.yml` that is located in `group_vars/bind9` and set proper values:
+### 1. Configure inventory
+
+Edit `ansible/inventory.ini` and set the target host address and SSH credentials:
+
+```ini
+[bind9]
+192.168.1.10
+
+[bind9:vars]
+ansible_ssh_user=user
+ansible_ssh_pass=password
+# ansible_ssh_private_key_file=~/.ssh/id_rsa
+ansible_port=22
+```
+
+### 2. Configure Bind9
+
+Edit `ansible/group_vars/bind9/configuration.yml`:
 
 ```yml
 addresses:
-  first: 127.0.0.0
-  second: 127.0.1.0
+  first: 192.168.1.0
+  second: 192.168.2.0
 dns1: 9.9.9.9
 dns2: 149.112.112.112
 ```
 
-Here:
+- `addresses` — IP network prefixes (without `/24`) added to the internal ACL. Only hosts within these networks will be allowed to use the resolver. You can add any number of entries:
 
 ```yml
 addresses:
-  first: 127.0.1.0
-  second: 127.0.2.0
+  first: 192.168.1.0
+  second: 192.168.2.0
+  third: 192.168.3.0
+  fourth: 192.168.4.0
 ```
 
-there is an option to add more addresses that will be added to `acl` configuration in `named.conf.options` e.g:
-
-```yml
-addresses:
-  first: 127.0.0.0
-  second: 127.0.1.0
-  third: 127.0.2.0
-  fourth: 127.0.3.0
-```
-
-and the output for `named.conf.options` will be:
+The above produces the following ACL in `named.conf.options`:
 
 ```conf
 acl internal {
-    127.0.0.0/24;
-    127.0.1.0/24;
-    127.0.2.0/24;
-    127.0.3.0/24;
+    192.168.1.0/24;
+    192.168.2.0/24;
+    192.168.3.0/24;
+    192.168.4.0/24;
 };
+```
+
+- `dns1` / `dns2` — upstream DNS forwarders used for DNS-over-TLS (port 853).
+
+### 3. Run the playbook
+
+```bash
+cd ansible
+ansible-playbook install.yml
+```
+
+## Ubuntu
+
+On Ubuntu, `systemd-resolved` binds to port 53 by default, which conflicts with Bind9. Disable it before running the playbook:
+
+```bash
+sudo vim /etc/systemd/resolved.conf
+```
+
+Uncomment and set:
+
+```ini
+DNSStubListener=no
+```
+
+Save and restart the service:
+
+```bash
+sudo systemctl restart systemd-resolved.service
+```
+
+## Docker
+
+The Docker image can be used to run the playbook without installing Ansible locally:
+
+```bash
+docker run --rm -it moleszek/bind9
 ```

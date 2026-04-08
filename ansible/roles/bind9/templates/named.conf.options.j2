@@ -1,3 +1,8 @@
+tls quad9-dot {
+    remote-hostname "dns.quad9.net";
+    ca-file "/etc/ssl/certs/ca-certificates.crt";
+};
+
 acl internal {
     {% for address in addresses.values() %}
       {{ address }}/24;
@@ -29,7 +34,7 @@ options {
     };
 
     // Set up forwarders
-    forwarders {
+    forwarders port 853 tls quad9-dot {
       {{ dns1 }};
       {{ dns2 }};
     };

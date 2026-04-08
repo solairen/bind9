@@ -1,4 +1,4 @@
-FROM moleszek/ansible:13.2.0
+FROM moleszek/ansible:1.0.0
 
 ARG username=vscode
 

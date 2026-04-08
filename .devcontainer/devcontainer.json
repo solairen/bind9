@@ -30,7 +30,8 @@
         "docsmsft.docs-preview",
         "redhat.ansible",
         "aaron-bond.better-comments",
-        "eamodio.gitlens"
+        "eamodio.gitlens",
+        "Anthropic.claude-code"
       ]
     }
   }

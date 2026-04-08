@@ -1,12 +1,11 @@
 ---
 name: Test Docker registry
 on:
-  push:
-    branches-ignore:
-      - "main"
-  pull_request:
-    branches-ignore:
-      - "main"
+  workflow_dispatch:
+    inputs:
+      versioning:
+        description: 'Version'
+        required: true
 
 jobs:
   publish:
@@ -28,4 +27,4 @@ jobs:
           file: docker/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: false
-          tags: moleszek/bind9:latest
+          tags: moleszek/bind9:test

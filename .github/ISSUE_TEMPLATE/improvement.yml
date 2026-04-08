@@ -31,5 +31,7 @@ body:
       options:
         - Docker
         - Ansible
+        - CI/CD
+        - Other
     validations:
       required: true

@@ -37,7 +37,9 @@ body:
       description: What method you use to run?
       options:
         - Docker
-        - Ansible (cloned repository)
+        - Ansible
+        - CI/CD
+        - Other
     validations:
       required: true
   - type: dropdown

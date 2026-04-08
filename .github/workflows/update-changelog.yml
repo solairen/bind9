@@ -4,6 +4,9 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+
 jobs:
   update-changelog:
     runs-on: ubuntu-24.04
@@ -18,9 +21,9 @@ jobs:
           enforcement: "disabled"
 
       - name: Changelog Update
-        uses: bcsizmadia/changelog_update@main
+        uses: bcsizmadia/changelog_update@1.0.0
         with:
-          token: ${{ secrets.GHCR_PASSWORD }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit_message: "Update changelog for new release"
 
       - name: Enable ruleset in repository

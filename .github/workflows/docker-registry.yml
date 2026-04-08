@@ -63,4 +63,4 @@ jobs:
           name: ${{ github.event.milestone.title }} (${{ steps.get_date.outputs.date }})
           tag_name: ${{ github.event.milestone.title }}
           generate_release_notes: true
-          token: ${{ secrets.GHCR_TOKEN }}
+          token: ${{ secrets.GHCR_PASSWORD }}

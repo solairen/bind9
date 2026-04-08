@@ -1,14 +1,11 @@
 ---
-name: Test Docker registry
+name: Tests
 on:
-  workflow_dispatch:
-    inputs:
-      versioning:
-        description: 'Version'
-        required: true
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
-  publish:
+  build-docker:
     name: Test docker image
     runs-on: ubuntu-latest
     steps:
@@ -28,3 +25,16 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: false
           tags: moleszek/bind9:test
+
+  ansible-lint:
+    name: Run Ansible lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install Ansible collections
+        run: ansible-galaxy collection install -r requirements.yml
+      - name: Check yaml files
+        uses: ansible/ansible-lint@v26.4.0
+        with:
+          args: "-c ../.ansible-lint"
+          working_directory: "ansible"  

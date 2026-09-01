@@ -58,3 +58,18 @@
 * @solairen made their first contribution in https://github.com/solairen/bind9/pull/46
 
 **Full Changelog**: https://github.com/solairen/bind9/commits/1.0.0
+
+## 1.0.1
+
+## What's Changed
+* Bump softprops/action-gh-release from 2 to 3 by @dependabot[bot] in https://github.com/solairen/bind9/pull/58
+* Bump actions/add-to-project from 1.0.2 to 2.0.0 by @dependabot[bot] in https://github.com/solairen/bind9/pull/59
+* Bump ansible/ansible-lint from 26.4.0 to 26.6.0 by @dependabot[bot] in https://github.com/solairen/bind9/pull/61
+* Bump actions/checkout from 6 to 7 by @dependabot[bot] in https://github.com/solairen/bind9/pull/60
+* Bump docker/login-action from 4 to 4.5.2 by @dependabot[bot] in https://github.com/solairen/bind9/pull/62
+* Bump docker/login-action from 4.5.2 to 4.6.0 by @dependabot[bot] in https://github.com/solairen/bind9/pull/63
+* Bump ansible/ansible-lint from 26.6.0 to 26.8.0 by @dependabot[bot] in https://github.com/solairen/bind9/pull/64
+* Bump solairen/ruleset-trigger from 1.0.5 to 1.0.6 by @dependabot[bot] in https://github.com/solairen/bind9/pull/65
+
+
+**Full Changelog**: https://github.com/solairen/bind9/compare/1.0.0...1.0.1
